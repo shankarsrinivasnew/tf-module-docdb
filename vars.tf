@@ -17,6 +17,12 @@ variable "subnet_ids" {
   
 }
 
+variable "tags" {
+  
+}
 
+variable "engine_version" {
+  
+}
 
 
