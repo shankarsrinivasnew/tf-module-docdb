@@ -8,6 +8,8 @@ resource "aws_docdb_cluster" "docdbr" {
   preferred_backup_window = var.preferred_backup_window
   skip_final_snapshot     = var.skip_final_snapshot
   db_subnet_group_name    = aws_docdb_subnet_group.subgrpr.name
+  kms_key_id              = data.aws_kms_key.mykey.arn
+  storage_encrypted       = var.storage_encrypted
 
 }
 
@@ -19,4 +21,11 @@ resource "aws_docdb_subnet_group" "subgrpr" {
     var.tags,
     { Name = "${var.env}-subnet-group" }
   )
+}
+
+resource "aws_docdb_cluster_instance" "cluster_instances" {
+  count              = var.instance_count
+  identifier         = "${var.env}-docdb-instance-${count.index}"
+  cluster_identifier = aws_docdb_cluster.docdbr.id
+  instance_class     = var.instance_class
 }
