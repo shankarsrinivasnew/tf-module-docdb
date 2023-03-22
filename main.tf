@@ -11,6 +11,11 @@ resource "aws_docdb_cluster" "docdbr" {
   kms_key_id              = data.aws_kms_key.mykey.arn
   storage_encrypted       = var.storage_encrypted
 
+  tags = merge(
+    var.tags,
+    { Name = "${var.env}-docdb" }
+  )
+
 }
 
 resource "aws_docdb_subnet_group" "subgrpr" {
