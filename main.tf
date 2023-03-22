@@ -7,7 +7,7 @@ resource "aws_docdb_cluster" "docdbr" {
   backup_retention_period = var.backup_retention_period
   preferred_backup_window = var.preferred_backup_window
   skip_final_snapshot     = var.skip_final_snapshot
-  db_subnet_group_name    = aws.aws_docdb_subnet_group.subnet_id
+  db_subnet_group_name    = aws_docdb_subnet_group.subgrpr.name
 
 }
 
