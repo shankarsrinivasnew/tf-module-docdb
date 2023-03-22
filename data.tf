@@ -7,5 +7,5 @@ data "aws_ssm_parameter" "docdb-pass" {
 }
 
 data "aws_kms_key" "mykey" {
-  key_id = alias/terraform-b71
+  key_id = "alias/terraform-b71"
 }
