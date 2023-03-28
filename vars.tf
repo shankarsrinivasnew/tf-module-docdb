@@ -37,3 +37,9 @@ variable "instance_count" {
 variable "instance_class" {
 
 }
+variable "allow_db_to_subnets" {
+  
+}
+variable "vpc_id" {
+  
+}

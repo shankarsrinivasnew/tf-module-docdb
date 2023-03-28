@@ -10,6 +10,7 @@ resource "aws_docdb_cluster" "docdbr" {
   db_subnet_group_name    = aws_docdb_subnet_group.subgrpr.name
   kms_key_id              = data.aws_kms_key.mykey.arn
   storage_encrypted       = var.storage_encrypted
+  vpc_security_group_ids = [aws_security_group.sgr.id]
 
   tags = merge(
     var.tags,
@@ -51,4 +52,31 @@ resource "aws_ssm_parameter" "docdb_url_user" {
   name  = "${var.env}.docdb_url_user"
   type  = "String"
   value = "mongodb://${data.aws_ssm_parameter.docdb-user.value}:${data.aws_ssm_parameter.docdb-pass.value}@dev-docdb.cluster-capdsiq5nfpo.us-east-1.docdb.amazonaws.com:27017/?ssl=true&ssl_ca_certs=rds-combined-ca-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false"
+}
+
+resource "aws_security_group" "sgr" {
+  name        = "docdb-${var.env}-sg"
+  description = "docdb-${var.env}-sg"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    description      = "docdb port"
+    from_port        = 27017
+    to_port          = 27017
+    protocol         = "tcp"
+    cidr_blocks      = var.allow_db_to_subnets
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = merge(
+      var.tags,
+      { Name = "docdb-${var.env}" }
+    )
 }
