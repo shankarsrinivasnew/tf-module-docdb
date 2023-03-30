@@ -39,7 +39,7 @@ resource "aws_docdb_cluster_instance" "cluster_instances" {
 resource "aws_ssm_parameter" "docdb_url_catalogue" {
   name  = "${var.env}.docdb_url_catalogue"
   type  = "String"
-  value = "mongodb://${data.aws_ssm_parameter.docdb-user.value}:${data.aws_ssm_parameter.docdb-pass.value}@dev-docdb.cluster-capdsiq5nfpo.us-east-1.docdb.amazonaws.com:27017/catalogue?tls=true&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false"
+  value = "mongodb://${data.aws_ssm_parameter.docdb-user.value}:${data.aws_ssm_parameter.docdb-pass.value}@${aws_docdb_cluster.docdbr.endpoint}:27017/catalogue?tls=true&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false"
 }
 
 resource "aws_ssm_parameter" "docdb_endpoint" {
@@ -51,7 +51,7 @@ resource "aws_ssm_parameter" "docdb_endpoint" {
 resource "aws_ssm_parameter" "docdb_url_user" {
   name  = "${var.env}.docdb_url_user"
   type  = "String"
-  value = "mongodb://${data.aws_ssm_parameter.docdb-user.value}:${data.aws_ssm_parameter.docdb-pass.value}@dev-docdb.cluster-capdsiq5nfpo.us-east-1.docdb.amazonaws.com:27017/user?tls=true&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false"
+  value = "mongodb://${data.aws_ssm_parameter.docdb-user.value}:${data.aws_ssm_parameter.docdb-pass.value}@${aws_docdb_cluster.docdbr.endpoint}:27017/user?tls=true&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false"
 }
 
 resource "aws_security_group" "sgr" {
